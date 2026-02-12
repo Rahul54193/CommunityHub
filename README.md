@@ -1,97 +1,88 @@
+# React Native Project
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting Started
+## Getting Started
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+### Prerequisites
 
-## Step 1: Start Metro
+- **Node.js**: v22.18.0
+- **Java**: 17.0.17 (2025-10-21)
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+### Backend Setup (JSON Server)
 
-To start the Metro dev server, run the following command from the root of your React Native project:
-
-```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+1. Clone the repository:
+```bash
+   git clone https://github.com/Rahul54193/Mockserver/tree/main
+   cd Mockserver
 ```
 
-## Step 2: Build and run your app
+2. Install dependencies and start the server:
+```bash
+   npm install
+   npm start
+```
+   
+   The server will start on port 3000.
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### App Installation
 
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+1. Clone the repository:
+```bash
+   git clone [YOUR_REPO_URL]
+   cd [PROJECT_NAME]
 ```
 
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+2. Install dependencies:
+```bash
+   npm install
 ```
 
-Then, and every time you update your native dependencies, run:
+3. **Network Configuration**:
+   - Ensure your device is connected to the same WiFi network as the backend server
+   - If using an emulator, check the configuration in `src/api/client.ts`
 
-```sh
-bundle exec pod install
+4. Run the app:
+```bash
+   npm run android
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## Architecture Overview
 
-```sh
-# Using npm
-npm run ios
+### Tech Stack
 
-# OR using Yarn
-yarn ios
-```
+- **React Native** - Mobile framework
+- **TanStack Query** - Data fetching and caching
+- **Zustand** - State management
+- **TypeScript** - Type safety
+- **React Native Paper** - UI icons
+- **JSON Server** - Mock backend
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Key Design Decisions
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+**TanStack/React Query**
+- Automatic caching, refetching, and synchronization
+- Reduces boilerplate for async operations
 
-## Step 3: Modify your app
+**Zustand over Redux**
+- Simpler API with less boilerplate code
+- Sufficient for current app complexity
 
-Now that you have successfully run the app, let's make changes!
+**Storage Strategy**
+- React Native Keychain for sensitive data over Local storage.
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+**UX Enhancements**
+- Keyboard dismiss on tap for better mobile experience
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+## Future Improvements
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+Given more time, the following enhancements would be implemented:
 
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- [ ] Splash screen on app launch
+- [ ] Search and member count filters on the community list screen
+- [ ] Theming dark and light
+- [ ] Internationalized (i18n) multilingual app  
+- [ ] Unit tests using React Native Jest
+- [ ] Real-time updates via WebSocket integration
+- [ ] Environment variables for development, staging, and production
+- [ ] Custom app icons
