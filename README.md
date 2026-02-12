@@ -1,7 +1,4 @@
-# React Native Project
-
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
-
+# Community Hub
 ## Getting Started
 
 ### Prerequisites
@@ -29,8 +26,8 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 1. Clone the repository:
 ```bash
-   git clone [YOUR_REPO_URL]
-   cd [PROJECT_NAME]
+   git clone https://github.com/Rahul54193/CommunityHub/tree/main
+   cd CommunityHub
 ```
 
 2. Install dependencies:
@@ -40,7 +37,7 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 3. **Network Configuration**:
    - Ensure your device is connected to the same WiFi network as the backend server
-   - If using an emulator, check the configuration in `src/api/client.ts`
+   - Check the configuration in `src/api/client.ts`
 
 4. Run the app:
 ```bash
