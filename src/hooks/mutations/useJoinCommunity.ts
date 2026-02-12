@@ -17,7 +17,6 @@ const joinCommunity = async (
       communityId,
       userId,
     });
-    console.log('Join response----->>>>:', response);
   } catch (error) {
     console.error('Error joining community:', error);
     if (error instanceof Error) {

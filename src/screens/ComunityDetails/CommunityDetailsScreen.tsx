@@ -18,6 +18,8 @@ import { SkeletonLoader } from '../../components/SkeletonLoader';
 import { colors } from '../../styles/tokens';
 import { Header } from '../../components/Header/Header';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { queryClient } from '../../utils/queryClient';
+import { useNetworkStatus } from '../../hooks/useNetworkStatus';
 interface Post {
   id: number;
   title: string;
@@ -43,6 +45,7 @@ export const CommunityDetailsScreen: React.FC<CommunityDetailsScreenProps> = ({
   navigation,
   route,
 }) => {
+  const { isOnline } = useNetworkStatus();
   const { communityId, community: initialCommunity, members } = route.params;
   const { user } = useAuthStore();
   const [isMember, setIsMember] = useState(false);
@@ -66,9 +69,32 @@ export const CommunityDetailsScreen: React.FC<CommunityDetailsScreenProps> = ({
       leaveCommunity(
         { communityId },
         {
-          onSuccess: () => {
+          onSuccess: async () => {
             setIsMember(false);
-            refetch();
+            queryClient.setQueriesData(
+              { queryKey: ['communities'], exact: false },
+              (oldData: any) => {
+                if (!oldData?.data) return oldData;
+                return {
+                  ...oldData,
+                  data: oldData.data.map((community: any) =>
+                    community.id === communityId
+                      ? {
+                          ...community,
+                          memberId: community.memberId?.filter(
+                            (id: number) => id !== user?.id,
+                          ),
+                          memberCount: Math.max(
+                            0,
+                            (community.memberCount || 1) - 1,
+                          ),
+                        }
+                      : community,
+                  ),
+                };
+              },
+            );
+            await queryClient.refetchQueries({ queryKey: ['communities'], exact: false });
           },
           onError: error => {
             setIsMember(true);
@@ -79,9 +105,27 @@ export const CommunityDetailsScreen: React.FC<CommunityDetailsScreenProps> = ({
       joinCommunity(
         { communityId },
         {
-          onSuccess: () => {
+          onSuccess: async () => {
             setIsMember(true);
-            refetch();
+            queryClient.setQueriesData(
+              { queryKey: ['communities'] ,exact: false},
+              (oldData: any) => {
+                if (!oldData?.data) return oldData;
+                return {
+                  ...oldData,
+                  data: oldData.data.map((community: any) =>
+                    community.id === communityId
+                      ? {
+                          ...community,
+                          memberId: [...(community.memberId || []), user?.id],
+                          memberCount: (community.memberCount || 0) + 1,
+                        }
+                      : community,
+                  ),
+                };
+              },
+            );
+            await queryClient.refetchQueries({ queryKey: ['communities'], exact: false });
           },
           onError: error => {
             setIsMember(false);
@@ -107,8 +151,8 @@ export const CommunityDetailsScreen: React.FC<CommunityDetailsScreenProps> = ({
     <>
       {[1, 2, 3].map(key => (
         <View key={key} style={styles.postCard}>
-          <SkeletonLoader height={20} width="80%" style={styles.mb} />
-          <SkeletonLoader height={16} width="100%" style={styles.mb} />
+          <SkeletonLoader height={20} width="80%" />
+          <SkeletonLoader height={16} width="100%" />
           <SkeletonLoader height={16} width="60%" />
         </View>
       ))}
@@ -177,10 +221,10 @@ export const CommunityDetailsScreen: React.FC<CommunityDetailsScreenProps> = ({
             style={[
               styles.memberButton,
               isMember && styles.memberButtonActive,
-              (isJoining || isLeaving) && styles.disabledButton,
+              (!isOnline || isJoining || isLeaving) && styles.disabledButton,
             ]}
             onPress={handleJoinToggle}
-            disabled={isJoining || isLeaving}
+            disabled={!isOnline || isJoining || isLeaving}
           >
             {isJoining || isLeaving ? (
               <ActivityIndicator

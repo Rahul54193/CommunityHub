@@ -13,6 +13,7 @@ import { ErrorDisplay } from '../../components/ErrorDisplay';
 import { SkeletonCommunityCard } from '../../components/SkeletonLoader';
 import { colors } from '../../styles/tokens';
 import { Header } from '../../components/Header/Header';
+import { queryClient } from '../../utils/queryClient';
 
 interface Community {
   id: number;
@@ -90,9 +91,12 @@ export const CommunityListScreen: React.FC<CommunityListScreenProps> = ({
 
   const handleRefresh = useCallback(() => {
     if (isFetching) return;
+    queryClient.resetQueries({
+      queryKey: ['communities'],
+    });
     setPage(1);
-    refetch();
-  }, [isFetching, refetch]);
+    setAllCommunities([]);
+  }, [isFetching]);
 
   const renderCommunityCard = useCallback(
     ({ item }: { item: Community }) => (

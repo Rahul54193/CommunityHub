@@ -43,7 +43,7 @@ export const useAuthStore = create<AuthStore>(set => ({
 
   login: async (email: string, password: string) => {
     try {
-      if (email === 'user@example.com' && password === 'password123') {
+      if (email === 'user@example.com' && password === '12345') {
         const fakeToken = `token_${Date.now()}_${Math.random()
           .toString(36)
           .substr(2, 9)}`;

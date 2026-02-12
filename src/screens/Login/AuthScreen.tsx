@@ -108,11 +108,10 @@ export const AuthScreen: React.FC = () => {
               <Text style={styles.loginButtonText}>Login</Text>
             )}
           </TouchableOpacity>
-
           <View style={styles.demoContainer}>
             <Text style={styles.demoText}>Demo Credentials:</Text>
             <Text style={styles.demoEmail}>user@example.com</Text>
-            <Text style={styles.demoPassword}>password123</Text>
+            <Text style={styles.demoPassword}>12345</Text>
           </View>
         </View>
       </View>
