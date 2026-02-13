@@ -15,6 +15,7 @@ import { useLeaveCommunity } from '../../hooks/mutations/useLeaveCommunity';
 import { useAuthStore } from '../../state/store/authStore';
 import { ErrorDisplay } from '../../components/ErrorDisplay';
 import { SkeletonLoader } from '../../components/SkeletonLoader';
+import { Toast } from '../../components/Toast';
 import { colors } from '../../styles/tokens';
 import { Header } from '../../components/Header/Header';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -29,12 +30,7 @@ interface Post {
   createdAt: string;
 }
 
-interface Community {
-  id: number;
-  name: string;
-  description: string;
-  memberCount: number;
-}
+
 
 interface CommunityDetailsScreenProps {
   navigation: any;
@@ -49,6 +45,20 @@ export const CommunityDetailsScreen: React.FC<CommunityDetailsScreenProps> = ({
   const { communityId, community: initialCommunity, members } = route.params;
   const { user } = useAuthStore();
   const [isMember, setIsMember] = useState(false);
+  const [toastConfig, setToastConfig] = useState({
+    visible: false,
+    message: '',
+    type: 'error' as 'error' | 'success' | 'warning' | 'info',
+  });
+
+  const showToast = (message: string, type: 'error' | 'success' | 'warning' | 'info' = 'error') => {
+    setToastConfig({ visible: true, message, type });
+  };
+
+  const hideToast = () => {
+    setToastConfig(prev => ({ ...prev, visible: false }));
+  };
+
   useEffect(() => {
     if (user && members) {
       setIsMember(members.includes(user.id));
@@ -64,40 +74,62 @@ export const CommunityDetailsScreen: React.FC<CommunityDetailsScreenProps> = ({
   const { mutate: joinCommunity, isPending: isJoining } = useJoinCommunity();
   const { mutate: leaveCommunity, isPending: isLeaving } = useLeaveCommunity();
 
+  const updateCommunityInCache = (
+    communityId: number,
+    updateFn: (community: any) => any,
+  ) => {
+    queryClient.setQueriesData(
+      { queryKey: ['communities'], exact: false },
+      (oldData: any) => {
+        if (!oldData) return oldData;
+        if (oldData.pages) {
+          return {
+            ...oldData,
+            pages: oldData.pages.map((page: any) => ({
+              ...page,
+              data: page.data.map((community: any) =>
+                community.id === communityId ? updateFn(community) : community,
+              ),
+            })),
+          };
+        }
+        if (oldData.data) {
+          return {
+            ...oldData,
+            data: oldData.data.map((community: any) =>
+              community.id === communityId ? updateFn(community) : community,
+            ),
+          };
+        }
+        
+        return oldData;
+      },
+    );
+  };
+
   const handleJoinToggle = () => {
-    if (isMember) {
+    const previousMembershipStatus = isMember;
+    setIsMember(!isMember);
+    if (previousMembershipStatus) {
       leaveCommunity(
         { communityId },
         {
           onSuccess: async () => {
-            setIsMember(false);
-            queryClient.setQueriesData(
-              { queryKey: ['communities'], exact: false },
-              (oldData: any) => {
-                if (!oldData?.data) return oldData;
-                return {
-                  ...oldData,
-                  data: oldData.data.map((community: any) =>
-                    community.id === communityId
-                      ? {
-                          ...community,
-                          memberId: community.memberId?.filter(
-                            (id: number) => id !== user?.id,
-                          ),
-                          memberCount: Math.max(
-                            0,
-                            (community.memberCount || 1) - 1,
-                          ),
-                        }
-                      : community,
-                  ),
-                };
-              },
-            );
-            await queryClient.refetchQueries({ queryKey: ['communities'], exact: false });
+            updateCommunityInCache(communityId, (community) => ({
+              ...community,
+              memberId: community.memberId?.filter(
+                (id: number) => id !== user?.id,
+              ),
+              memberCount: Math.max(0, (community.memberCount || 1) - 1),
+            }));
+            await queryClient.refetchQueries({
+              queryKey: ['communities'],
+              exact: false,
+            });
           },
           onError: error => {
-            setIsMember(true);
+            setIsMember(previousMembershipStatus);
+            showToast('Failed to leave community. Please try again.');
           },
         },
       );
@@ -106,29 +138,19 @@ export const CommunityDetailsScreen: React.FC<CommunityDetailsScreenProps> = ({
         { communityId },
         {
           onSuccess: async () => {
-            setIsMember(true);
-            queryClient.setQueriesData(
-              { queryKey: ['communities'] ,exact: false},
-              (oldData: any) => {
-                if (!oldData?.data) return oldData;
-                return {
-                  ...oldData,
-                  data: oldData.data.map((community: any) =>
-                    community.id === communityId
-                      ? {
-                          ...community,
-                          memberId: [...(community.memberId || []), user?.id],
-                          memberCount: (community.memberCount || 0) + 1,
-                        }
-                      : community,
-                  ),
-                };
-              },
-            );
-            await queryClient.refetchQueries({ queryKey: ['communities'], exact: false });
+            updateCommunityInCache(communityId, (community) => ({
+              ...community,
+              memberId: [...(community.memberId || []), user?.id],
+              memberCount: (community.memberCount || 0) + 1,
+            }));
+            await queryClient.refetchQueries({
+              queryKey: ['communities'],
+              exact: false,
+            });
           },
           onError: error => {
-            setIsMember(false);
+            setIsMember(previousMembershipStatus);
+            showToast('Failed to join community. Please try again.');
           },
         },
       );
@@ -281,6 +303,12 @@ export const CommunityDetailsScreen: React.FC<CommunityDetailsScreenProps> = ({
           </View>
         )}
       </ScrollView>
+      <Toast
+        visible={toastConfig.visible}
+        message={toastConfig.message}
+        type={toastConfig.type}
+        onDismiss={hideToast}
+      />
     </View>
   );
 };

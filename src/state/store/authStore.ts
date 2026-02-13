@@ -26,10 +26,6 @@ export const useAuthStore = create<AuthStore>(set => ({
     try {
       const hasToken = await tokenService.hasUserDetails();
       const userDetails = hasToken ? await tokenService.getUserDetails() : null;
-      console.log(
-        'Auth status checked. User details:',
-        JSON.parse(userDetails),
-      );
       set({
         isAuthenticated: hasToken,
         user: JSON.parse(userDetails).user,

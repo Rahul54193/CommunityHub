@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, memo, useMemo } from 'react';
+import React, { useCallback, memo } from 'react';
 import {
   View,
   FlatList,
@@ -13,7 +13,6 @@ import { ErrorDisplay } from '../../components/ErrorDisplay';
 import { SkeletonCommunityCard } from '../../components/SkeletonLoader';
 import { colors } from '../../styles/tokens';
 import { Header } from '../../components/Header/Header';
-import { queryClient } from '../../utils/queryClient';
 
 interface Community {
   id: number;
@@ -57,46 +56,30 @@ const RenderEmptyComponent = () => (
 export const CommunityListScreen: React.FC<CommunityListScreenProps> = ({
   navigation,
 }) => {
-  const [page, setPage] = useState(1);
-  const [allCommunities, setAllCommunities] = useState<Community[]>([]);
+  const {
+    data,
+    isLoading,
+    isRefetching,
+    error,
+    refetch,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useCommunities(_ITEMS_PER_PAGE);
 
-  const { data, isLoading, isRefetching, error, refetch, isFetching,isPending } =
-    useCommunities(page, _ITEMS_PER_PAGE);
-
-  const total = data?.total || 0;
-
-  useEffect(() => {
-    if (data?.data) {
-      if (page === 1) {
-        setAllCommunities(data.data);
-      } else {
-        setAllCommunities(prev => {
-          const existingIds = new Set(prev.map(c => c.id));
-          const newCommunities = data.data.filter(c => !existingIds.has(c.id));
-          return [...prev, ...newCommunities];
-        });
-      }
-    }
-  }, [data, page]);
+  const communities = data?.data || [];
 
   const handleLoadMore = useCallback(() => {
-    if (isFetching) return;
-    const hasMoreData = allCommunities.length < total;
-    const isCurrentlyLoading = isLoading || isFetching;
-
-    if (hasMoreData && !isCurrentlyLoading) {
-      setPage(prev => prev + 1);
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
-  }, [allCommunities.length, total, isLoading, isFetching]);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const handleRefresh = useCallback(() => {
     if (isFetching) return;
-    queryClient.resetQueries({
-      queryKey: ['communities'],
-    });
-    setPage(1);
-    setAllCommunities([]);
-  }, [isFetching]);
+    refetch();
+  }, [isFetching, refetch]);
 
   const renderCommunityCard = useCallback(
     ({ item }: { item: Community }) => (
@@ -122,7 +105,7 @@ export const CommunityListScreen: React.FC<CommunityListScreenProps> = ({
   );
 
   const renderFooter = useCallback(() => {
-    if (isFetching && page > 1 && allCommunities.length > 0) {
+    if (isFetchingNextPage) {
       return (
         <View style={styles.loadingFooter}>
           <ActivityIndicator size="small" color={colors.primary} />
@@ -130,7 +113,7 @@ export const CommunityListScreen: React.FC<CommunityListScreenProps> = ({
       );
     }
     return null;
-  }, [isFetching, page, allCommunities.length]);
+  }, [isFetchingNextPage]);
 
   const keyExtractor = useCallback((item: Community) => item.id.toString(), []);
 
@@ -143,7 +126,7 @@ export const CommunityListScreen: React.FC<CommunityListScreenProps> = ({
     []
   );
 
-  if (isLoading && allCommunities.length === 0) {
+  if (isLoading && communities.length === 0) {
     return (
       <View style={styles.container}>
         <RenderSkeleton />
@@ -151,14 +134,12 @@ export const CommunityListScreen: React.FC<CommunityListScreenProps> = ({
     );
   }
 
-  if (error && allCommunities.length === 0) {
+  if (error && communities.length === 0) {
     return (
       <ErrorDisplay
-        error={error}
         title="Error fetching communities"
-        message="Please try again"
+        message={error.message || "Please try again"}
         onRetry={() => {
-          setPage(1);
           refetch();
         }}
         visible={true}
@@ -170,7 +151,7 @@ export const CommunityListScreen: React.FC<CommunityListScreenProps> = ({
     <View style={styles.container}>
       <MemoizedHeader />
       <FlatList
-        data={allCommunities}
+        data={communities}
         renderItem={renderCommunityCard}
         keyExtractor={keyExtractor}
         contentContainerStyle={styles.listContent}
@@ -181,7 +162,7 @@ export const CommunityListScreen: React.FC<CommunityListScreenProps> = ({
         getItemLayout={getItemLayout}
         refreshControl={
           <RefreshControl
-            refreshing={isRefetching && page === 1}
+            refreshing={isRefetching}
             onRefresh={handleRefresh}
             colors={[colors.primary]}
           />
@@ -190,8 +171,7 @@ export const CommunityListScreen: React.FC<CommunityListScreenProps> = ({
         onEndReachedThreshold={0.5}
         ListFooterComponent={renderFooter}
         ListEmptyComponent={
-          !isLoading &&
-          !allCommunities.length ? (
+          !isLoading && communities.length === 0 ? (
             <RenderEmptyComponent />
           ) : null
         }

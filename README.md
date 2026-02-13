@@ -55,7 +55,7 @@
 - **React Native Paper** - UI icons
 - **JSON Server** - Mock backend
 
-### Key Design Decisions
+### Key Design Decisions 
 
 **TanStack/React Query**
 - Automatic caching, refetching, and synchronization
@@ -83,3 +83,4 @@ Given more time, the following enhancements would be implemented:
 - [ ] Real-time updates via WebSocket integration
 - [ ] Environment variables for development, staging, and production
 - [ ] Custom app icons
+- [ ] UI can be made more better

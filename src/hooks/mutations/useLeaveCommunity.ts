@@ -11,7 +11,6 @@ const leaveCommunity = async (
   userId: number,
 ): Promise<void> => {
   try {
-
     const response = await apiClient.delete(`/communities/leave`, {
       data: {
         communityId,
@@ -19,9 +18,7 @@ const leaveCommunity = async (
       },
     });
   } catch (error) {
-    console.error('Error leaving community:', error);
     if (error instanceof Error) {
-      console.error('Error message:', error.message);
     }
     throw error;
   }
@@ -43,4 +40,4 @@ export const useLeaveCommunity = () => {
       });
     },
   });
-};;
+};

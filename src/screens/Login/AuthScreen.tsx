@@ -9,7 +9,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-// import { styles } from './AuthScreen.styles';
 import { useAuthStore } from '../../state/store/authStore';
 import { styles } from './AuthScreen.styles';
 

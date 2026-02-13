@@ -18,9 +18,7 @@ const joinCommunity = async (
       userId,
     });
   } catch (error) {
-    console.error('Error joining community:', error);
     if (error instanceof Error) {
-      console.error('Error message:', error.message);
     }
     throw error;
   }
@@ -29,7 +27,6 @@ const joinCommunity = async (
 export const useJoinCommunity = () => {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
-console.log('useJoinCommunity user:', user);
   return useMutation({
     mutationFn: ({ communityId }: JoinCommunityParams) =>
       joinCommunity(communityId, user?.id || 0),

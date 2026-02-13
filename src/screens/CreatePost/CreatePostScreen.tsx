@@ -153,10 +153,16 @@ export const CreatePostScreen: React.FC<CreatePostScreenProps> = ({
         <TouchableOpacity
           style={[
             styles.publishButton,
-            (!isOnline || isPending) && styles.disabledButton,
+            (!isOnline || isPending || formState.title.trim().length === 0 ||
+            formState.body.trim().length === 0) && styles.disabledButton,
           ]}
           onPress={handlePublish}
-          disabled={!isOnline || isPending}
+          disabled={
+            !isOnline ||
+            isPending ||
+            formState.title.trim().length === 0 ||
+            formState.body.trim().length === 0
+          }
         >
           {isPending ? (
             <ActivityIndicator color="#fff" />

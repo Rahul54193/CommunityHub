@@ -1,6 +1,5 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import apiClient from '../../api/client';
-import { queryClient } from '../../utils/queryClient';
 
 interface Community {
   id: number;
@@ -31,25 +30,18 @@ const fetchCommunities = async (
   };
 };
 
-export const useCommunities = (page: number = 1, limit: number = 10) => {
-
-  return useQuery({
-    queryKey: ['communities', page, limit],
-    queryFn: () => fetchCommunities(page, limit),
-    select: (data) => {
-      let allCommunities: Community[] = [];
-      
-      for (let p = 1; p <= page; p++) {
-        const cachedData = queryClient.getQueryData<CommunitiesResponse>(['communities', p, limit]);
-        if (cachedData?.data) {
-          allCommunities = [...allCommunities, ...cachedData.data];
-        }
-      }
-      
-      return {
-        data: allCommunities.length > 0 ? allCommunities : data.data,
-        total: data.total,
-      };
+export const useCommunities = (limit: number = 10) => {
+  return useInfiniteQuery({
+    queryKey: ['communities'],
+    queryFn: ({ pageParam = 1 }) => fetchCommunities(pageParam, limit),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      const totalLoaded = allPages.flatMap(p => p.data).length;
+      return totalLoaded < lastPage.total ? allPages.length + 1 : undefined;
     },
+    select: (data) => ({
+      data: data.pages.flatMap(p => p.data),
+      total: data.pages[0]?.total || 0,
+    }),
   });
 };
