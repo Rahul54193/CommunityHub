@@ -13,7 +13,7 @@ import { ErrorDisplay } from '../../components/ErrorDisplay/ErrorDisplay';
 import { SkeletonCommunityCard } from '../../components/SkeletonLoader/SkeletonLoader';
 import { colors } from '../../styles/tokens';
 import { Header } from '../../components/Header/Header';
-import { useAuthStore } from '../../state/store/authStore';
+import { useAuthStore } from '../../store/authStore';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Community {

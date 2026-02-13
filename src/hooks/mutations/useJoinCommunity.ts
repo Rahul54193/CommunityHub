@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import apiClient from '../../api/client';
-import { useAuthStore } from '../../state/store/authStore';
+import { useAuthStore } from '../../store/authStore';
 
 interface JoinCommunityParams {
   communityId: number;

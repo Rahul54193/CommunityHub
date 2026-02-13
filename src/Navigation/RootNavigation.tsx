@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { useAuthStore } from '../state/store/authStore';
+import { useAuthStore } from '../store/authStore';
 import { AuthStack } from './AuthStack';
 import { MainStack } from './MainStack';
 import { colors } from '../styles/tokens';

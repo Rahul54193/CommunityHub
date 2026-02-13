@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { tokenService } from '../../services';
+import { tokenService } from '../services';
 
 interface User {
   id: number;

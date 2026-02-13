@@ -52,8 +52,9 @@ npm run android
 
 5. Test credentials
 
-   user@example.com
-   12345
+   Email : user@example.com
+
+   Password : 12345
 
 ## Architecture Overview
 
@@ -88,8 +89,7 @@ npm run android
 │   └── Login
 ├── services
 │   └── api
-├── state
-│   └── store
+├── store
 ├── styles
 └── utils
 ```

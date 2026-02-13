@@ -12,7 +12,7 @@ import { styles } from './CommunityDetailsScreen.styles';
 import { useCommunityPosts } from '../../hooks/queries/useCommunityPosts';
 import { useJoinCommunity } from '../../hooks/mutations/useJoinCommunity';
 import { useLeaveCommunity } from '../../hooks/mutations/useLeaveCommunity';
-import { useAuthStore } from '../../state/store/authStore';
+import { useAuthStore } from '../../store/authStore';
 import { ErrorDisplay } from '../../components/ErrorDisplay/ErrorDisplay';
 import { SkeletonLoader } from '../../components/SkeletonLoader/SkeletonLoader';
 import { Toast } from '../../components/Toast';
