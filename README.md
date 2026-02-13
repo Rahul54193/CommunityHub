@@ -112,10 +112,12 @@ npm run android
 
 ## Screenshots
 
-![Screenshot 1](src/screenshots/Screenshot_2026-02-13-14-22-46-847_com.comunityhubapp.jpg)
-![Screenshot 2](src/screenshots/Screenshot_2026-02-13-14-22-30-163_com.comunityhubapp.jpg)
-![Screenshot 3](src/screenshots/Screenshot_2026-02-13-14-22-35-204_com.comunityhubapp.jpg)
-![Screenshot 4](src/screenshots/Screenshot_2026-02-13-14-22-38-949_com.comunityhubapp.jpg)
+<p>
+   <img src="src/screenshots/Screenshot_2026-02-13-14-22-46-847_com.comunityhubapp.jpg" width="24%" alt="Screenshot 1" />
+   <img src="src/screenshots/Screenshot_2026-02-13-14-22-30-163_com.comunityhubapp.jpg" width="24%" alt="Screenshot 2" />
+   <img src="src/screenshots/Screenshot_2026-02-13-14-22-35-204_com.comunityhubapp.jpg" width="24%" alt="Screenshot 3" />
+   <img src="src/screenshots/Screenshot_2026-02-13-14-22-38-949_com.comunityhubapp.jpg" width="24%" alt="Screenshot 4" />
+</p>
 
 ## What you’d improve with more time
 
