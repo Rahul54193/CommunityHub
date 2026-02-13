@@ -43,7 +43,10 @@
 ```bash
    npm run android
 ```
-
+4. Test credentials
+   user@example.com
+   12345
+   
 ## Architecture Overview
 
 ### Tech Stack
