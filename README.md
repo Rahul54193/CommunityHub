@@ -1,4 +1,5 @@
 # Community Hub
+
 ## Getting Started
 
 ### Prerequisites
@@ -9,30 +10,34 @@
 ### Backend Setup (JSON Server)
 
 1. Clone the repository:
+
 ```bash
-   git clone https://github.com/Rahul54193/Mockserver/tree/main
-   cd Mockserver
+git clone https://github.com/Rahul54193/Mockserver/tree/main
+cd Mockserver
 ```
 
 2. Install dependencies and start the server:
+
 ```bash
-   npm install
-   npm start
+npm install
+npm start
 ```
-   
-   The server will start on port 3000.
+
+The server will start on port 3000.
 
 ### App Installation
 
 1. Clone the repository:
+
 ```bash
-   git clone https://github.com/Rahul54193/CommunityHub/tree/main
-   cd CommunityHub
+git clone https://github.com/Rahul54193/CommunityHub/tree/main
+cd CommunityHub
 ```
 
 2. Install dependencies:
+
 ```bash
-   npm install
+npm install
 ```
 
 3. **Network Configuration**:
@@ -40,13 +45,16 @@
    - Check the configuration in `src/api/client.ts`
 
 4. Run the app:
+
 ```bash
-   npm run android
+npm run android
 ```
-4. Test credentials
+
+5. Test credentials
+
    user@example.com
    12345
-   
+
 ## Architecture Overview
 
 ### Tech Stack
@@ -58,7 +66,35 @@
 - **React Native Paper** - UI icons
 - **JSON Server** - Mock backend
 
-### Key Design Decisions 
+### Folder structure
+
+```
+├── api
+├── components
+│   ├── ErrorBoundry
+│   ├── ErrorDisplay
+│   ├── Header
+│   ├── OfflineIndicator
+│   ├── SkeletonLoader
+│   └── Toast
+├── hooks
+│   ├── mutations
+│   └── queries
+├── Navigation
+├── screens
+│   ├── ComunityDetails
+│   ├── CreatePost
+│   ├── Home
+│   └── Login
+├── services
+│   └── api
+├── state
+│   └── store
+├── styles
+└── utils
+```
+
+### Key decisions & tradeoffs 
 
 **TanStack/React Query**
 - Automatic caching, refetching, and synchronization
@@ -74,7 +110,14 @@
 **UX Enhancements**
 - Keyboard dismiss on tap for better mobile experience
 
-## Future Improvements
+## Screenshots
+
+![Screenshot 1](src/screenshots/Screenshot_2026-02-13-14-22-46-847_com.comunityhubapp.jpg)
+![Screenshot 2](src/screenshots/Screenshot_2026-02-13-14-22-30-163_com.comunityhubapp.jpg)
+![Screenshot 3](src/screenshots/Screenshot_2026-02-13-14-22-35-204_com.comunityhubapp.jpg)
+![Screenshot 4](src/screenshots/Screenshot_2026-02-13-14-22-38-949_com.comunityhubapp.jpg)
+
+## What you’d improve with more time
 
 Given more time, the following enhancements would be implemented:
 

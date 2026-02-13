@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import { styles } from './CreatePostScreen.styles';
 import { useCreatePost } from '../../hooks/mutations/useCreatePost';
-import { ErrorDisplay } from '../../components/ErrorDisplay';
+import { ErrorDisplay } from '../../components/ErrorDisplay/ErrorDisplay';
 import { Header } from '../../components/Header/Header';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { colors } from '../../styles';

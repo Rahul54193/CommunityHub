@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Animated } from 'react-native';
 import { styles } from './OfflineIndicator.styles';
-import { useNetworkStatus } from '../hooks/useNetworkStatus';
+import { useNetworkStatus } from '../../hooks/useNetworkStatus';
 
 export const OfflineIndicator: React.FC = () => {
   const { isOnline } = useNetworkStatus();

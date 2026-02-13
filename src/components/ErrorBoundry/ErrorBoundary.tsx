@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { styles } from './ErrorBoundary.styles';
-import { colors, typography } from '../styles';
+import { colors, typography } from '../../styles';
 
 interface Props {
   children: React.ReactNode;

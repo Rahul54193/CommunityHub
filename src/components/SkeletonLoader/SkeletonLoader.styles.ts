@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { colors, spacing } from '../styles/index';
+import { colors, spacing } from '../../styles/index';
 
 export const styles = StyleSheet.create({
   skeleton: {

@@ -9,10 +9,12 @@ import {
 } from 'react-native';
 import { styles } from './CommunityListScreen.styles';
 import { useCommunities } from '../../hooks/queries/useCommunities';
-import { ErrorDisplay } from '../../components/ErrorDisplay';
-import { SkeletonCommunityCard } from '../../components/SkeletonLoader';
+import { ErrorDisplay } from '../../components/ErrorDisplay/ErrorDisplay';
+import { SkeletonCommunityCard } from '../../components/SkeletonLoader/SkeletonLoader';
 import { colors } from '../../styles/tokens';
 import { Header } from '../../components/Header/Header';
+import { useAuthStore } from '../../state/store/authStore';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 interface Community {
   id: number;
@@ -37,16 +39,6 @@ const RenderSkeleton = memo(() => (
   </>
 ));
 
-const MemoizedHeader = memo(() => (
-  <Header
-    Title="Communities"
-    LeftIcon={null}
-    LeftAction={() => {}}
-    RightIcon={null}
-    RightAction={() => {}}
-  />
-));
-
 const RenderEmptyComponent = () => (
   <View style={styles.emptyContainer}>
     <Text style={styles.emptyText}>No communities found</Text>
@@ -56,6 +48,7 @@ const RenderEmptyComponent = () => (
 export const CommunityListScreen: React.FC<CommunityListScreenProps> = ({
   navigation,
 }) => {
+  const { logout } = useAuthStore();
   const {
     data,
     isLoading,
@@ -149,7 +142,13 @@ export const CommunityListScreen: React.FC<CommunityListScreenProps> = ({
 
   return (
     <View style={styles.container}>
-      <MemoizedHeader />
+      <Header
+        Title="Communities"
+        LeftIcon={null}
+        LeftAction={() => {}}
+        RightIcon={<Icon name="logout" size={24} color={colors.text.primary} />}
+        RightAction={logout}
+      />
       <FlatList
         data={communities}
         renderItem={renderCommunityCard}
