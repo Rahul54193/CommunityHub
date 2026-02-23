@@ -28,8 +28,9 @@ export const useJoinCommunity = () => {
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
   return useMutation({
-    mutationFn: ({ communityId }: JoinCommunityParams) =>
-      joinCommunity(communityId, user?.id || 0),
+    mutationFn: ({ communityId }: JoinCommunityParams) => {
+      return joinCommunity(communityId, user?.id || 0);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['communities'],
