@@ -8,8 +8,8 @@ export const useNetworkStatus = () => {
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
       const online = state.isConnected ?? true;
-      setIsOnline(!online);
-      onlineManager.setOnline(!online);
+      setIsOnline(online);
+      onlineManager.setOnline(online);
     });
 
     return () => unsubscribe();
