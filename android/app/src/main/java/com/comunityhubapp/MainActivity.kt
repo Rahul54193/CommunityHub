@@ -6,6 +6,9 @@ import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
+import android.net.ConnectivityManager
+import android.content.Context
+import android.widget.Toast
 
 class MainActivity : ReactActivity() {
 
@@ -14,9 +17,19 @@ class MainActivity : ReactActivity() {
    * rendering of the component.
    */
   override fun getMainComponentName(): String = "ComunityHubApp"
+
   override fun onCreate(savedInstanceState: Bundle?) {
     supportFragmentManager.fragmentFactory = RNScreensFragmentFactory()
     super.onCreate(savedInstanceState)
+    checkInternetConnectivity()
+  }
+
+  private fun checkInternetConnectivity() {
+    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    val activeNetwork = connectivityManager.activeNetworkInfo
+    if (activeNetwork == null || !activeNetwork.isConnected) {
+      Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show()
+    }
   }
 
   /**

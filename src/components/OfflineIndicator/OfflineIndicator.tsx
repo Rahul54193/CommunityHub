@@ -8,17 +8,17 @@ export const OfflineIndicator: React.FC = () => {
   const [fadeAnim] = React.useState(new Animated.Value(0));
 
   React.useEffect(() => {
-    if (!isOnline) {
+    if (isOnline === false) {
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 300,
-        useNativeDriver: false,
+        useNativeDriver: true,
       }).start();
     } else {
       Animated.timing(fadeAnim, {
         toValue: 0,
         duration: 300,
-        useNativeDriver: false,
+        useNativeDriver: true,
       }).start();
     }
   }, [isOnline, fadeAnim]);

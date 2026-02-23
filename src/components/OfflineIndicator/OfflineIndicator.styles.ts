@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row', // Added to ensure proper layout for toggle functionality
   },
   text: {
     ...typography.caption,
